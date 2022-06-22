@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {
-
     @MockBean
     private AccountService accountService;
 
@@ -38,9 +38,10 @@ class AccountControllerTest {
                         .accountNumber("3456")
                         .accountStatus(AccountStatus.IN_USE)
                         .build());
+
         //when
         //then
-        mockMvc.perform(get("/account/876322"))
+        mockMvc.perform(get("/account/876"))
                 .andDo(print())
                 .andExpect(jsonPath("$.accountNumber").value("3456"))
                 .andExpect(jsonPath("$.accountStatus").value("IN_USE"))

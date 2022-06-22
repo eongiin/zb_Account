@@ -1,6 +1,5 @@
 package com.eongiin.account.service;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -20,7 +19,7 @@ public class RedisTestService {
 
         try {
             boolean isLock = lock.tryLock(1, 5, TimeUnit.SECONDS);
-            if (!isLock) {
+            if(!isLock) {
                 log.error("======Lock acquisition failed=====");
                 return "Lock failed";
             }

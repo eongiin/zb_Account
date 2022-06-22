@@ -1,6 +1,5 @@
 package com.eongiin.account.config;
 
-
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -20,7 +19,7 @@ public class RedisRepositoryConfig {
     public RedissonClient redissonClient() {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://" + redisHost + ":" + redisPort);
+
         return Redisson.create(config);
     }
-
 }

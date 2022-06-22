@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 public class AccountService {
     private final AccountRepository accountRepository;
 
-
     @Transactional
     public void createAccount() {
         Account account = Account.builder()
@@ -25,7 +24,7 @@ public class AccountService {
 
     @Transactional
     public Account getAccount(Long id) {
-        if (id < 0) {
+        if(id < 0){
             throw new RuntimeException("Minus");
         }
         return accountRepository.findById(id).get();
