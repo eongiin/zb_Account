@@ -1,8 +1,8 @@
 package com.eongiin.account.controller;
 
 import com.eongiin.account.domain.Account;
-import com.eongiin.account.dto.AccountDto;
 import com.eongiin.account.dto.CreateAccount;
+import com.eongiin.account.dto.DeleteAccount;
 import com.eongiin.account.service.AccountService;
 import com.eongiin.account.service.RedisTestService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,18 @@ public class AccountController {
                 accountService.createAccount(
                         request.getUserId(),
                         request.getInitialBalance()
+                )
+        );
+    }
+
+    @DeleteMapping("/account")
+    public DeleteAccount.Response deleteAccount(
+            @RequestBody @Valid DeleteAccount.Request request
+    ) {
+        return DeleteAccount.Response.from(
+                accountService.deleteAccount(
+                        request.getUserId(),
+                        request.getAccountNumber()
                 )
         );
     }
