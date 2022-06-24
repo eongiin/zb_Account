@@ -1,4 +1,4 @@
-package com.eongiin.account.domain;
+package com.eongiin.account.type;
 
 public enum AccountStatus {
     IN_USE,
