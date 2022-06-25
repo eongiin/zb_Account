@@ -1,5 +1,6 @@
 package com.eongiin.account.controller;
 
+import com.eongiin.account.dto.CancelBalance;
 import com.eongiin.account.dto.UseBalance;
 import com.eongiin.account.exception.AccountException;
 import com.eongiin.account.service.TransactionService;
@@ -37,6 +38,26 @@ public class TransactionController {
         } catch (AccountException e) {
             log.error("Failed to use balance");
             transactionService.saveFailedUseTransaction(
+                    request.getAccountNumber(),
+                    request.getAmount()
+            );
+            throw e;
+        }
+    }
+
+    @PostMapping("/transaction/cancel")
+    public CancelBalance.Response cancelBalance(
+            @Valid @RequestBody CancelBalance.Request request
+    ) {
+
+        try {
+            return CancelBalance.Response.from(
+                    transactionService.cancelBalance(request.getTransactionId(),
+                            request.getAccountNumber(), request.getAmount())
+            );
+        } catch (AccountException e) {
+            log.error("Failed to use balance");
+            transactionService.saveFailedCancelTransaction(
                     request.getAccountNumber(),
                     request.getAmount()
             );
