@@ -4,9 +4,11 @@ import com.eongiin.account.domain.Account;
 import com.eongiin.account.dto.AccountDto;
 import com.eongiin.account.dto.CreateAccount;
 import com.eongiin.account.dto.DeleteAccount;
+import com.eongiin.account.exception.AccountException;
 import com.eongiin.account.type.AccountStatus;
 import com.eongiin.account.service.AccountService;
 import com.eongiin.account.service.RedisTestService;
+import com.eongiin.account.type.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,6 +138,21 @@ class AccountControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.accountNumber").value("3456"))
                 .andExpect(jsonPath("$.accountStatus").value("IN_USE"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void failGetAccount() throws Exception {
+        //given
+        given(accountService.getAccount(anyLong()))
+                .willThrow(new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //when
+        //then
+        mockMvc.perform(get("/account/876"))
+                .andDo(print())
+                .andExpect(jsonPath("$.errorCode").value("ACCOUNT_NOT_FOUND"))
+                .andExpect(jsonPath("$.errorMessage").value("계좌가 없습니다."))
                 .andExpect(status().isOk());
     }
 }
