@@ -1,5 +1,6 @@
 package com.eongiin.account.controller;
 
+import com.eongiin.account.aop.AccountLock;
 import com.eongiin.account.dto.CancelBalance;
 import com.eongiin.account.dto.QueryTransactionResponse;
 import com.eongiin.account.dto.UseBalance;
@@ -25,11 +26,13 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("/transaction/use")
+    @AccountLock
     public UseBalance.Response useBalance(
             @Valid @RequestBody UseBalance.Request request
-    ) {
+    ) throws InterruptedException {
 
         try {
+            Thread.sleep(3000l);
             return UseBalance.Response.from(
                     transactionService.useBalance(request.getUserId(),
                             request.getAccountNumber(), request.getAmount())
@@ -45,6 +48,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/cancel")
+    @AccountLock
     public CancelBalance.Response cancelBalance(
             @Valid @RequestBody CancelBalance.Request request
     ) {
